@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "415523442279",
+    "project_id": "tripeka-mobile",
+    "storage_bucket": "tripeka-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415523442279:android:f19ed8cb1627dd67fb8ec2",
+        "android_client_info": {
+          "package_name": "com.tripeka_mobile.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415523442279-c5kmd7rrjicu341egk5bdbvo0chteto7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtM7df73Nw-p-3YEmywFRjjqvkCCrwcE0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415523442279-c5kmd7rrjicu341egk5bdbvo0chteto7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

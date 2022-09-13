@@ -1,0 +1,86 @@
+import 'package:app/services/auth.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:auth/auth.dart';
+
+class SignIn extends StatefulWidget {
+  const SignIn({super.key});
+
+  @override
+  State<SignIn> createState() => _SignInState();
+}
+
+class _SignInState extends State<SignIn> {
+  //final AuthService _auth = AuthService();
+
+  Future signInEmail(emailAddress, password) async {
+    try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: emailAddress, password: password);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+  }
+
+  String email = '';
+  String password = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // backgroundColor: Colors.grey[900],
+      appBar: AppBar(
+        backgroundColor: Colors.grey[800],
+        elevation: 0.0,
+        title: Text('Sign in'),
+      ),
+      body: Container(
+        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+        child: Form(
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 20.0),
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.person),
+                  hintText: 'Email',
+                ),
+                onChanged: (val) {
+                  setState(() => email = val);
+                },
+              ),
+              SizedBox(height: 20.0),
+              TextFormField(
+                obscureText: true,
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.person),
+                  hintText: 'Password',
+                ),
+                onChanged: (val) {
+                  setState(() => password = val);
+                },
+              ),
+              SizedBox(height: 20.0),
+              ElevatedButton(
+                  child: Text(
+                    'Sign In',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () async {
+                    print(email);
+                    print(password);
+                    await signInEmail(email, password);
+                    //dynamic result = await _auth.signInEmail(email, password);
+                  }),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
