@@ -28,8 +28,11 @@ class _SignInState extends State<SignIn> {
     }
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   String email = '';
   String password = '';
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +61,12 @@ class _SignInState extends State<SignIn> {
                   icon: Icon(Icons.person),
                   hintText: 'Email',
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Enter Email';
+                  }
+                  return null;
+                },
                 onChanged: (val) {
                   setState(() => email = val);
                 },
@@ -69,6 +78,12 @@ class _SignInState extends State<SignIn> {
                   icon: Icon(Icons.person),
                   hintText: 'Password',
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Enter Password';
+                  }
+                  return null;
+                },
                 onChanged: (val) {
                   setState(() => password = val);
                 },
@@ -82,6 +97,11 @@ class _SignInState extends State<SignIn> {
                   onPressed: () async {
                     print(email);
                     print(password);
+                    if (_formKey.currentState!.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Processing Data')),
+                      );
+                    }
                     await signInEmail(email, password);
                     //dynamic result = await _auth.signInEmail(email, password);
                   }),

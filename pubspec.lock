@@ -171,7 +171,7 @@ packages:
     source: hosted
     version: "0.0.1"
   google_sign_in:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: google_sign_in
       url: "https://pub.dartlang.org"

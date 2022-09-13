@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:app/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:auth/auth.dart';
 
 class Register extends StatefulWidget {
@@ -12,6 +13,26 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   // final AuthService _auth = AuthService();
+
+  Future Register(emailAddress, password) async {
+    try {
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailAddress,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  final _formKey = GlobalKey<FormState>();
 
   String email = '';
   String password = '';
@@ -35,6 +56,7 @@ class _RegisterState extends State<Register> {
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
+          key: _formKey,
           child: Column(
             children: <Widget>[
               SizedBox(height: 20.0),
@@ -43,6 +65,12 @@ class _RegisterState extends State<Register> {
                   icon: Icon(Icons.person),
                   hintText: 'Email',
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Enter Email';
+                  }
+                  return null;
+                },
                 onChanged: (val) {
                   setState(() => email = val);
                 },
@@ -54,6 +82,8 @@ class _RegisterState extends State<Register> {
                   icon: Icon(Icons.person),
                   hintText: 'Password',
                 ),
+                validator: (val) =>
+                    val!.length < 6 ? 'Enter a password 6+ chars long' : null,
                 onChanged: (val) {
                   setState(() => password = val);
                 },
@@ -67,6 +97,12 @@ class _RegisterState extends State<Register> {
                   onPressed: () async {
                     print(email);
                     print(password);
+                    if (_formKey.currentState!.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Processing Data')),
+                      );
+                    }
+                    await Register(email, password);
                   }),
             ],
           ),

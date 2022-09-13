@@ -1,23 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 //import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 class AuthService {
   //final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // sign in anon
-  Future signInAnon() async {
-    try {
-      final UserCredential = FirebaseAuth.instance.signInAnonymously();
-      print("Signed in with temporary account.");
-    } on FirebaseAuthException catch (e) {
-      switch (e.code) {
-        case "operation-not-allowed":
-          print("Anonymous auth hasn't been enabled for this project.");
-          break;
-        default:
-          print("Unknown error.");
-      }
-    }
+  // sign in google
+  Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   // sign in with email and password
@@ -33,7 +30,25 @@ class AuthService {
       }
     }
   }
+
   // register with email and password
+  Future Register(emailAddress, password) async {
+    try {
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailAddress,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   // sign out
 
