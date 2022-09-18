@@ -15,10 +15,12 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   //final AuthService _auth = AuthService();
 
-  Future signInEmail(emailAddress, password) async {
+  Future signInEmail() async {
+    print("HERE @ signInEmail()");
     try {
-      final credential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: emailAddress, password: password);
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _email.text, password: _password.text);
+      print(credential);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
@@ -28,11 +30,22 @@ class _SignInState extends State<SignIn> {
     }
   }
 
-  final _formKey = GlobalKey<FormState>();
+  final myController = TextEditingController();
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
 
-  String email = '';
-  String password = '';
-  String error = '';
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
+  // final _formKey = GlobalKey<FormState>();
+
+  // String email = '';
+  // String password = '';
+  // String error = '';
 
   @override
   Widget build(BuildContext context) {
@@ -61,15 +74,16 @@ class _SignInState extends State<SignIn> {
                   icon: Icon(Icons.person),
                   hintText: 'Email',
                 ),
+                controller: _email,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Enter Email';
                   }
                   return null;
                 },
-                onChanged: (val) {
-                  setState(() => email = val);
-                },
+                // onChanged: (val) {
+                //   setState(() => _email = val);
+                // },
               ),
               SizedBox(height: 20.0),
               TextFormField(
@@ -78,15 +92,16 @@ class _SignInState extends State<SignIn> {
                   icon: Icon(Icons.person),
                   hintText: 'Password',
                 ),
+                controller: _password,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Enter Password';
                   }
                   return null;
                 },
-                onChanged: (val) {
-                  setState(() => password = val);
-                },
+                // onChanged: (val) {
+                //   setState(() => _password = val);
+                // },
               ),
               SizedBox(height: 20.0),
               ElevatedButton(
@@ -95,14 +110,14 @@ class _SignInState extends State<SignIn> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    print(email);
-                    print(password);
-                    if (_formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Processing Data')),
-                      );
-                    }
-                    await signInEmail(email, password);
+                    print(_email);
+                    print(_password);
+                    // if (_formKey.currentState!.validate()) {
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     const SnackBar(content: Text('Processing Data')),
+                    //   );
+                    // }
+                    await signInEmail();
                     //dynamic result = await _auth.signInEmail(email, password);
                   }),
             ],
