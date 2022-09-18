@@ -2,15 +2,6 @@
 
 A new Flutter project.
 
-## Getting Started
+trip eka is the web application which is an all in one platform to manage and plan trips which consists of budget management, live location sharing among group members, image uploads which trip member captured during the trip to a common storage thus eveyone can access those images. and aslo we provide more features like car rental, group creation and chat facility to the registered users, weather forcasting, guiding services, and also hotel bookings.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+we are building this responisive web applicaiton using reactjs and spring boot as REST API so that we can later build mobile applications as well
