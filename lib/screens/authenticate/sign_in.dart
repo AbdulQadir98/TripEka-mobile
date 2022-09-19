@@ -1,8 +1,8 @@
 import 'package:app/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:auth/auth.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -13,8 +13,6 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  //final AuthService _auth = AuthService();
-
   Future signInEmail() async {
     print("HERE @ signInEmail()");
     try {
@@ -118,8 +116,35 @@ class _SignInState extends State<SignIn> {
                     //   );
                     // }
                     await signInEmail();
-                    //dynamic result = await _auth.signInEmail(email, password);
                   }),
+              SizedBox(height: 20.0),
+              Divider(),
+              SizedBox(height: 20.0),
+              Text(
+                'or sign in using google',
+              ),
+              SizedBox(height: 20.0),
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.person),
+                  hintText: 'Email',
+                ),
+                controller: _email,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Enter Email';
+                  }
+                  return null;
+                },
+                // onChanged: (val) {
+                //   setState(() => _email = val);
+                // },
+              ),
+              SizedBox(height: 20.0),
+              SignInButton(
+                Buttons.Google,
+                onPressed: () {},
+              ),
             ],
           ),
         ),
