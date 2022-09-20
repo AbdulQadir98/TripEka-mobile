@@ -50,7 +50,8 @@ class _SignInState extends State<SignIn> {
     await prefs.setString('email', _email.text);
   }
 
-  // Read from shared preferences
+  // Check if email is NULL else Read,
+  // from shared preferences
   getValue() async {
     final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     final SharedPreferences prefs = await _prefs;
@@ -97,7 +98,8 @@ class _SignInState extends State<SignIn> {
                   icon: Icon(Icons.person),
                   hintText: 'Email',
                 ),
-                controller: getValue(),
+                // controller: getValue(),
+                controller: _email,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Enter Email';
