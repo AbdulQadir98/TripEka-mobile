@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:auth/auth.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -14,7 +15,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   Future signInEmail() async {
-    print("HERE @ signInEmail()");
+    // print("HERE @ signInEmail()");
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _email.text, password: _password.text);
@@ -29,6 +30,9 @@ class _SignInState extends State<SignIn> {
   }
 
   final myController = TextEditingController();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late Future<String> email;
+
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
 
@@ -39,6 +43,27 @@ class _SignInState extends State<SignIn> {
     _password.dispose();
     super.dispose();
   }
+
+  // Write user email in shared preferences
+  Future<void> _saveUser() async {
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setString('email', _email.text);
+  }
+
+  // Read from shared preferences
+  getValue() async {
+    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+    _email.text = prefs.getString('email')!;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Start listening to changes.
+    getValue();
+  }
+
   // final _formKey = GlobalKey<FormState>();
 
   // String email = '';
@@ -72,16 +97,13 @@ class _SignInState extends State<SignIn> {
                   icon: Icon(Icons.person),
                   hintText: 'Email',
                 ),
-                controller: _email,
+                controller: getValue(),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Enter Email';
                   }
                   return null;
                 },
-                // onChanged: (val) {
-                //   setState(() => _email = val);
-                // },
               ),
               SizedBox(height: 20.0),
               TextFormField(
@@ -97,9 +119,6 @@ class _SignInState extends State<SignIn> {
                   }
                   return null;
                 },
-                // onChanged: (val) {
-                //   setState(() => _password = val);
-                // },
               ),
               SizedBox(height: 20.0),
               ElevatedButton(
@@ -115,36 +134,9 @@ class _SignInState extends State<SignIn> {
                     //     const SnackBar(content: Text('Processing Data')),
                     //   );
                     // }
+                    _saveUser();
                     await signInEmail();
                   }),
-              SizedBox(height: 20.0),
-              Divider(),
-              SizedBox(height: 20.0),
-              Text(
-                'or sign in using google',
-              ),
-              SizedBox(height: 20.0),
-              TextFormField(
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.person),
-                  hintText: 'Email',
-                ),
-                controller: _email,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Enter Email';
-                  }
-                  return null;
-                },
-                // onChanged: (val) {
-                //   setState(() => _email = val);
-                // },
-              ),
-              SizedBox(height: 20.0),
-              SignInButton(
-                Buttons.Google,
-                onPressed: () {},
-              ),
             ],
           ),
         ),
