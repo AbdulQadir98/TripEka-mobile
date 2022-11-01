@@ -12,102 +12,69 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  // FirebaseFirestore.instance.collection('users').snapshots();
-  final Stream<QuerySnapshot> collectionReference = Database.readUser();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.grey[800],
-        elevation: 0.0,
-        title: Text('Welcome Bosa'),
-      ),
-      body: StreamBuilder(
-        stream: collectionReference,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasData) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: ListView(
-                children: snapshot.data!.docs.map((e) {
-                  return Card(
-                      child: Column(children: [
-                    ListTile(
-                      title: Text(e["employee_name"]),
-                      subtitle: Container(
-                        child: (Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text("Position: " + e['position'],
-                                style: const TextStyle(fontSize: 14)),
-                            Text("Contact Number: " + e['contact_no'],
-                                style: const TextStyle(fontSize: 12)),
-                          ],
-                        )),
+        appBar: AppBar(
+          backgroundColor: Colors.grey[800],
+          elevation: 0.0,
+          title: Text('Welcome Bosa'),
+        ),
+        body: StreamBuilder(
+            stream: FirebaseFirestore.instance.collection('users').snapshots(),
+            builder: (context,
+                AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+              // if the firestore database has data
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  // itemBuilder: (ctx, index) => Container(
+                  //   child: Text("snapshot.data!.docs[index]['email']"),
+                  // ),
+                  itemBuilder: (ctx, index) => Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Card(
+                      margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 25.0,
+                          backgroundColor: Colors
+                              .brown[snapshot.data!.docs[index]['strength']],
+                        ),
+                        title: Text(snapshot.data!.docs[index]['email']),
+                        subtitle: Text(
+                            'Takes ${snapshot.data!.docs[index]['email']} sugar(s)'),
                       ),
                     ),
-                    ButtonBar(
-                      alignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.all(5.0),
-                            primary: const Color.fromARGB(255, 143, 133, 226),
-                            textStyle: const TextStyle(fontSize: 20),
-                          ),
-                          child: const Text('Edit'),
-                          onPressed: () {},
-                        ),
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.all(5.0),
-                            primary: const Color.fromARGB(255, 143, 133, 226),
-                            textStyle: const TextStyle(fontSize: 20),
-                          ),
-                          child: const Text('Delete'),
-                          onPressed: () async {
-                            var response =
-                                await Database.deleteEmployee(docId: e.id);
-                            if (response.code != 200) {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      content:
-                                          Text(response.message.toString()),
-                                    );
-                                  });
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ]));
-                }).toList(),
-              ),
-            );
-          }
-          return Container(
-            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-            child: Center(
-              child: Column(
-                children: [
-                  Text('No data in database'),
-                  SizedBox(height: 20.0),
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     // FirebaseAuth.instance.signOut();
-                  //     print(snapshot);
-                  //   },
-                  //   child: Text('SignOut'),
-                  // )
-                ],
-              ),
-            ),
-          );
-        },
-      ),
-    );
+                  ),
+                );
+                // return Container(
+                //   padding:
+                //       EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                //   child: Center(
+                //     child: Column(
+                //       children: [
+                //         Text('No data in database'),
+                //         SizedBox(height: 20.0),
+                //         ElevatedButton(
+                //           onPressed: () {
+                //             // FirebaseAuth.instance.signOut();
+                //             // print(snapshot.data!.docs[0].data());
+                //             print(snapshot.data!.docs.map((e) {
+                //               e["name"];
+                //             }));
+                //           },
+                //           child: Text('SignOut'),
+                //         )
+                //       ],
+                //     ),
+                //   ),
+                // );
+              }
+            }));
   }
 }
