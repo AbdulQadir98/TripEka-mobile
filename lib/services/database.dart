@@ -7,16 +7,13 @@ final CollectionReference _Collection = _firestore.collection('users');
 class Database {
   // create user
   static Future<Response> addUser({
-    required String first_name,
-    required String last_name,
+    required String email,
+    required String name,
   }) async {
     Response response = Response();
     DocumentReference documentReferencer = _Collection.doc();
 
-    Map<String, dynamic> data = <String, dynamic>{
-      "first_name": first_name,
-      "last_name": last_name
-    };
+    Map<String, dynamic> data = <String, dynamic>{"email": email, "name": name};
 
     var result = await documentReferencer.set(data).whenComplete(() {
       response.code = 200;
@@ -38,16 +35,16 @@ class Database {
 
   // update user
   static Future<Response> updateUser({
-    required String first_name,
-    required String last_name,
+    required String email,
+    required String name,
     required String docId,
   }) async {
     Response response = Response();
     DocumentReference documentReferencer = _Collection.doc(docId);
 
     Map<String, dynamic> data = <String, dynamic>{
-      "first_name": first_name,
-      "last_name": last_name
+      "first_name": email,
+      "last_name": name
     };
 
     await documentReferencer.update(data).whenComplete(() {

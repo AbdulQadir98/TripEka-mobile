@@ -2,12 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../services/database.dart';
+import '../../models/user.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   // FirebaseFirestore.instance.collection('users').snapshots();
   final Stream<QuerySnapshot> collectionReference = Database.readUser();
 
-  // this has to be stateful
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,22 +57,7 @@ class Home extends StatelessWidget {
                             textStyle: const TextStyle(fontSize: 20),
                           ),
                           child: const Text('Edit'),
-                          onPressed: () {
-                            // Navigator.pushAndRemoveUntil<dynamic>(
-                            //   context,
-                            //   MaterialPageRoute<dynamic>(
-                            //     builder: (BuildContext context) => EditPage(
-                            //       employee: Employee(
-                            //           uid: e.id,
-                            //           employeename: e["employee_name"],
-                            //           position: e["position"],
-                            //           contactno: e["contact_no"]),
-                            //     ),
-                            //   ),
-                            //   (route) =>
-                            //       false, //if you want to disable back feature set to false
-                            // );
-                          },
+                          onPressed: () {},
                         ),
                         TextButton(
                           style: TextButton.styleFrom(
@@ -101,37 +93,21 @@ class Home extends StatelessWidget {
             child: Center(
               child: Column(
                 children: [
-                  Text('Welcome to home page'),
+                  Text('No data in database'),
                   SizedBox(height: 20.0),
-                  ElevatedButton(
-                    onPressed: () {
-                      FirebaseAuth.instance.signOut();
-                    },
-                    child: Text('SignOut'),
-                  )
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     // FirebaseAuth.instance.signOut();
+                  //     print(snapshot);
+                  //   },
+                  //   child: Text('SignOut'),
+                  // )
                 ],
               ),
             ),
           );
         },
       ),
-      // body: Container(
-      //   padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-      //   child: Center(
-      //     child: Column(
-      //       children: [
-      //         Text('Welcome to home page'),
-      //         SizedBox(height: 20.0),
-      //         ElevatedButton(
-      //           onPressed: () {
-      //             FirebaseAuth.instance.signOut();
-      //           },
-      //           child: Text('SignOut'),
-      //         )
-      //       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 }

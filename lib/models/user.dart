@@ -1,6 +1,6 @@
 class User {
-  String? first_name;
-  String? last_name;
+  String? email;
+  String? name;
 
-  User({this.first_name, this.last_name});
+  User({this.email, this.name});
 }
