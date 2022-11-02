@@ -97,7 +97,7 @@ class _HomeState extends State<Home> {
                         title: Text(snapshot.data!.docs[index]['email']),
                         subtitle: Text(
                             'Takes ${snapshot.data!.docs[index]['email']} sugar(s)'),
-                        onTap: () => _showUpdatePanel,
+                        onTap: () => _showUpdatePanel(),
                       ),
                     ),
                   ),
