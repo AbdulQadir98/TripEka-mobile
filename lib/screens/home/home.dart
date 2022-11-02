@@ -1,9 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:app/screens/home/orders.dart';
 import '../../services/database.dart';
 import '../../models/user.dart';
+import 'orders.dart';
+import 'updateOrder.dart';
 
+// Home has to be a sateless widget
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -12,6 +16,22 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  void _showCreatePanel() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Orders();
+        });
+  }
+
+  void _showUpdatePanel() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return UpdateOrders();
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,6 +39,26 @@ class _HomeState extends State<Home> {
           backgroundColor: Colors.grey[800],
           elevation: 0.0,
           title: Text('Welcome Bosa'),
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton.icon(
+                icon: Icon(Icons.add),
+                label: Text('Create Order'),
+                onPressed: () => _showCreatePanel(),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton.icon(
+                icon: Icon(Icons.person),
+                label: Text('logout'),
+                onPressed: () async {
+                  print("HERE");
+                },
+              ),
+            ),
+          ],
         ),
         body: StreamBuilder(
             stream: FirebaseFirestore.instance.collection('users').snapshots(),
@@ -26,15 +66,24 @@ class _HomeState extends State<Home> {
                 AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
               // if the firestore database has data
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return Center(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20.0),
+                      const CircularProgressIndicator(),
+                      const SizedBox(height: 20.0),
+                      ElevatedButton(
+                        onPressed: () {
+                          FirebaseAuth.instance.signOut();
+                        },
+                        child: const Text('SignOut'),
+                      ),
+                    ],
+                  ),
                 );
               } else {
                 return ListView.builder(
                   itemCount: snapshot.data!.docs.length,
-                  // itemBuilder: (ctx, index) => Container(
-                  //   child: Text("snapshot.data!.docs[index]['email']"),
-                  // ),
                   itemBuilder: (ctx, index) => Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Card(
@@ -48,31 +97,16 @@ class _HomeState extends State<Home> {
                         title: Text(snapshot.data!.docs[index]['email']),
                         subtitle: Text(
                             'Takes ${snapshot.data!.docs[index]['email']} sugar(s)'),
+                        onTap: () => _showUpdatePanel,
                       ),
                     ),
                   ),
                 );
-                // return Container(
-                //   padding:
-                //       EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-                //   child: Center(
-                //     child: Column(
-                //       children: [
-                //         Text('No data in database'),
-                //         SizedBox(height: 20.0),
-                //         ElevatedButton(
-                //           onPressed: () {
-                //             // FirebaseAuth.instance.signOut();
-                //             // print(snapshot.data!.docs[0].data());
-                //             print(snapshot.data!.docs.map((e) {
-                //               e["name"];
-                //             }));
-                //           },
-                //           child: Text('SignOut'),
-                //         )
-                //       ],
-                //     ),
-                //   ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     print("user details");
+                //   },
+                //   child: const Text('Test'),
                 // );
               }
             }));
