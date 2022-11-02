@@ -60,55 +60,88 @@ class _HomeState extends State<Home> {
             ),
           ],
         ),
-        body: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('users').snapshots(),
-            builder: (context,
-                AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-              // if the firestore database has data
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 20.0),
-                      const CircularProgressIndicator(),
-                      const SizedBox(height: 20.0),
-                      ElevatedButton(
-                        onPressed: () {
-                          FirebaseAuth.instance.signOut();
-                        },
-                        child: const Text('SignOut'),
-                      ),
-                    ],
-                  ),
-                );
-              } else {
-                return ListView.builder(
-                  itemCount: snapshot.data!.docs.length,
-                  itemBuilder: (ctx, index) => Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Card(
-                      margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          radius: 25.0,
-                          backgroundColor: Colors
-                              .brown[snapshot.data!.docs[index]['strength']],
+        body: Container(
+          child: StreamBuilder(
+              stream:
+                  FirebaseFirestore.instance.collection('users').snapshots(),
+              builder: (context,
+                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                // if the firestore database has data
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 20.0),
+                        const CircularProgressIndicator(),
+                        const SizedBox(height: 20.0),
+                        ElevatedButton(
+                          onPressed: () {
+                            FirebaseAuth.instance.signOut();
+                          },
+                          child: const Text('SignOut'),
                         ),
-                        title: Text(snapshot.data!.docs[index]['email']),
-                        subtitle: Text(
-                            'Takes ${snapshot.data!.docs[index]['email']} sugar(s)'),
-                        onTap: () => _showUpdatePanel(),
+                      ],
+                    ),
+                  );
+                } else {
+                  return Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("images/colombo.jpg"),
+                        fit: BoxFit.cover,
                       ),
                     ),
-                  ),
-                );
-                // ElevatedButton(
-                //   onPressed: () {
-                //     print("user details");
-                //   },
-                //   child: const Text('Test'),
-                // );
-              }
-            }));
+                    child: ListView.builder(
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (ctx, index) => Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Card(
+                          margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 15.0),
+                              ListTile(
+                                leading: CircleAvatar(
+                                  radius: 25.0,
+                                  backgroundColor: Colors.brown[
+                                      snapshot.data!.docs[index]['strength']],
+                                ),
+                                title:
+                                    Text(snapshot.data!.docs[index]['email']),
+                                subtitle: Text(
+                                    'Takes ${snapshot.data!.docs[index]['email']} sugar(s)'),
+                                // onTap: () => _showUpdatePanel(),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  TextButton(
+                                    child: const Text('UPDATE'),
+                                    onPressed: () => _showUpdatePanel(),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  TextButton(
+                                    child: const Text('DELETE'),
+                                    onPressed: () {/* ... */},
+                                  ),
+                                  const SizedBox(width: 8),
+                                ],
+                              ),
+                              SizedBox(height: 5.0),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     print("user details");
+                  //   },
+                  //   child: const Text('Test'),
+                  // );
+                }
+              }),
+        ));
   }
 }
