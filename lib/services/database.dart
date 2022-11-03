@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/response.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-final CollectionReference _Collection = _firestore.collection('users');
+final CollectionReference _Collection = _firestore.collection('coffee');
 
 class Database {
   // create user
@@ -66,7 +66,7 @@ class Database {
   }
 
   // delete user
-  static Future<Response> deleteEmployee({
+  static Future<Response> deleteCoffee({
     required String docId,
   }) async {
     Response response = Response();

@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
         body: Container(
           child: StreamBuilder(
               stream:
-                  FirebaseFirestore.instance.collection('users').snapshots(),
+                  FirebaseFirestore.instance.collection('coffee').snapshots(),
               builder: (context,
                   AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                 // if the firestore database has data
@@ -106,10 +106,9 @@ class _HomeState extends State<Home> {
                                   backgroundColor: Colors.brown[
                                       snapshot.data!.docs[index]['strength']],
                                 ),
-                                title:
-                                    Text(snapshot.data!.docs[index]['email']),
+                                title: Text(snapshot.data!.docs[index]['name']),
                                 subtitle: Text(
-                                    'Takes ${snapshot.data!.docs[index]['email']} sugar(s)'),
+                                    'Takes ${snapshot.data!.docs[index]['sugars']} sugar(s)'),
                                 // onTap: () => _showUpdatePanel(),
                               ),
                               Row(
@@ -122,7 +121,21 @@ class _HomeState extends State<Home> {
                                   const SizedBox(width: 8),
                                   TextButton(
                                     child: const Text('DELETE'),
-                                    onPressed: () {/* ... */},
+                                    onPressed: () async {
+                                      // var response =
+                                      //     await Database.deleteCoffee(
+                                      //         docId: e.id);
+                                      // if (response.code != 200) {
+                                      //   showDialog(
+                                      //       context: context,
+                                      //       builder: (context) {
+                                      //         return AlertDialog(
+                                      //           content: Text(response.message
+                                      //               .toString()),
+                                      //         );
+                                      //       });
+                                      // }
+                                    },
                                   ),
                                   const SizedBox(width: 8),
                                 ],
