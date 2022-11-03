@@ -1,7 +1,7 @@
-// class Coffee {
-//   final String? name;
-//   final String? sugars;
-//   final int? strength;
+class Coffee {
+  final String? name;
+  final String? sugars;
+  final int? strength;
 
-//   Coffee({this.name, this.sugars, this.strength});
-// }
+  Coffee({this.name, this.sugars, this.strength});
+}
