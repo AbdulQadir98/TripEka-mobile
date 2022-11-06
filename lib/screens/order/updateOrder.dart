@@ -28,38 +28,40 @@ class _UpdateOrdersState extends State<UpdateOrders> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: <Widget>[
-            SizedBox(height: 20.0),
-            Text(
+            const SizedBox(height: 10.0),
+            const Text(
               'Update your Order.',
-              style: TextStyle(fontSize: 18.0),
+              style: TextStyle(fontSize: 20.0),
             ),
-            SizedBox(height: 20.0),
-            TextFormField(initialValue: _name),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             DropdownButtonFormField(
               value: _currentSugars,
               items: sugars.map((sugar) {
                 return DropdownMenuItem(
                   value: sugar,
-                  child: Text('$sugar sugars'),
+                  child: Text(sugar),
                 );
               }).toList(),
               onChanged: (String? val) => setState(() => _currentSugars = val!),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
+            const Text(
+              'Spice level.',
+              style: TextStyle(fontSize: 18.0),
+            ),
             Slider(
               value: (_currentStrength).toDouble(),
-              activeColor: Colors.brown[_currentStrength],
-              inactiveColor: Colors.brown[_currentStrength],
+              activeColor: Colors.red[_currentStrength],
+              inactiveColor: Colors.red[_currentStrength],
               min: 100.0,
               max: 900.0,
               divisions: 8,
               onChanged: (val) =>
                   setState(() => _currentStrength = val.round()),
             ),
-            SizedBox(height: 30.0),
+            const SizedBox(height: 30.0),
             ElevatedButton(
-                child: Text(
+                child: const Text(
                   'Update',
                   style: TextStyle(color: Colors.white),
                 ),

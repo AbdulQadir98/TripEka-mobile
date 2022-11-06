@@ -7,17 +7,17 @@ final CollectionReference _Collection = _firestore.collection('coffee');
 class Database {
   // create user
   static Future<Response> addCoffee({
+    // required String uid,
     required String name,
-    required String sugars,
-    required int strength,
+    required String spice,
   }) async {
     Response response = Response();
     DocumentReference documentReferencer = _Collection.doc();
 
     Map<String, dynamic> data = <String, dynamic>{
+      // "uid": uid,
       "name": name,
-      "sugars": sugars,
-      "strength": strength
+      "spice": spice,
     };
 
     var result = await documentReferencer.set(data).whenComplete(() {
@@ -42,7 +42,7 @@ class Database {
   static Future<Response> updateUser({
     required String name,
     required String sugars,
-    required int strength,
+    required String strength,
     required String docId,
   }) async {
     Response response = Response();
@@ -93,7 +93,7 @@ class Database {
 //   // collection reference
 //   final CollectionReference brewCollection = FirebaseFirestore.instance.collection('brews');
 
-//   Future<void> updateUserData(String sugars, String name, int strength) async {
+//   Future<void> updateUserData(String sugars, String name, String strength) async {
 //     return await brewCollection.document(uid).setData({
 //       'sugars': sugars,
 //       'name': name,

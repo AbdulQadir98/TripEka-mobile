@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../services/database.dart';
 
@@ -13,16 +14,17 @@ class _OrdersState extends State<Orders> {
   final _name = TextEditingController();
   final _suagrs = TextEditingController();
   final _strength = TextEditingController();
+  final _uid = FirebaseAuth.instance.currentUser!.uid;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final List<String> sugars = ['0', '1', '2', '3', '4'];
-  final List<int> strengths = [100, 200, 300, 400, 500, 600, 700, 800, 900];
+  final List<String> strengths = ['colombo', 'japan', 'sigiriya'];
 
   // form values
   String _currentName = "";
   String _currentSugars = "";
-  int _currentStrength = 0;
+  String _currentStrength = "";
 
   @override
   Widget build(BuildContext context) {
@@ -92,30 +94,31 @@ class _OrdersState extends State<Orders> {
                       //   print("Order Placed");
                       // }),
                       onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          var response = await Database.addCoffee(
-                              name: _name.text,
-                              sugars: _suagrs.text,
-                              // TODO : int value
-                              strength: _strength.hashCode);
-                          if (response.code != 200) {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    content: Text(response.message.toString()),
-                                  );
-                                });
-                          } else {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    content: Text(response.message.toString()),
-                                  );
-                                });
-                          }
-                        }
+                        // if (_formKey.currentState!.validate()) {
+                        //   var response = await Database.addCoffee(
+                        //       uid: _uid,
+                        //       name: _name.text,
+                        //       sugars: _suagrs.text,
+                        //       // TODO : int value
+                        //       strength: _strength.text);
+                        //   if (response.code != 200) {
+                        //     showDialog(
+                        //         context: context,
+                        //         builder: (context) {
+                        //           return AlertDialog(
+                        //             content: Text(response.message.toString()),
+                        //           );
+                        //         });
+                        //   } else {
+                        //     showDialog(
+                        //         context: context,
+                        //         builder: (context) {
+                        //           return AlertDialog(
+                        //             content: Text(response.message.toString()),
+                        //           );
+                        //         });
+                        //   }
+                        // }
                       },
                     ),
                   ],
