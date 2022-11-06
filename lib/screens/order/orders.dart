@@ -1,6 +1,11 @@
+import 'dart:math';
+
+import 'package:app/screens/order/updateOrder.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../../services/database.dart';
 
 class Orders extends StatefulWidget {
   const Orders({super.key});
@@ -11,11 +16,11 @@ class Orders extends StatefulWidget {
 
 class _OrdersState extends State<Orders> {
   void _showUpdatePanel() {
-    // showModalBottomSheet(
-    //     context: context,
-    //     builder: (context) {
-    //       return UpdateOrders();
-    //     });
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return const UpdateOrders();
+        });
   }
 
   @override
@@ -24,7 +29,7 @@ class _OrdersState extends State<Orders> {
         appBar: AppBar(
           backgroundColor: Colors.grey[800],
           elevation: 0.0,
-          title: const Text('Welcome Bosa'),
+          title: const Text('Order List'),
           actions: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -63,7 +68,7 @@ class _OrdersState extends State<Orders> {
                 return Container(
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage("images/colombo.jpg"),
+                      image: AssetImage("images/cover.jpg"),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -97,36 +102,30 @@ class _OrdersState extends State<Orders> {
                               ),
                               //onTap: () => _showUpdatePanel(),
                             ),
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.end,
-                            //   children: <Widget>[
-                            //     TextButton(
-                            //       child: const Text('UPDATE'),
-                            //       onPressed: () => _showUpdatePanel(),
-                            //     ),
-                            //     const SizedBox(width: 8),
-                            //     TextButton(
-                            //       child: const Text('DELETE'),
-                            //       onPressed: () async {
-                            //         // var response =
-                            //         //     await Database.deleteCoffee(
-                            //         //         docId: e.id);
-                            //         // if (response.code != 200) {
-                            //         //   showDialog(
-                            //         //       context: context,
-                            //         //       builder: (context) {
-                            //         //         return AlertDialog(
-                            //         //           content: Text(response.message
-                            //         //               .toString()),
-                            //         //         );
-                            //         //       });
-                            //         // }
-                            //       },
-                            //     ),
-                            //     const SizedBox(width: 8),
-                            //   ],
-                            // ),
-                            // SizedBox(height: 5.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                const SizedBox(width: 8),
+                                TextButton(
+                                  child: const Text('CANCEL ORDER'),
+                                  onPressed: () async {
+                                    var response = await Database.deleteCoffee(
+                                        docId: snapshot.data!.docs[index].id);
+                                    if (response.code != 200) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              content: Text(
+                                                  response.message.toString()),
+                                            );
+                                          });
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 5.0),
                           ],
                         ),
                       ),

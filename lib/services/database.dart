@@ -38,21 +38,16 @@ class Database {
     return notesItemCollection.snapshots();
   }
 
-  // update user
-  static Future<Response> updateUser({
+  // update order
+  static Future<Response> updateOrder({
     required String name,
-    required String sugars,
-    required String strength,
+    required String spice,
     required String docId,
   }) async {
     Response response = Response();
     DocumentReference documentReferencer = _Collection.doc(docId);
 
-    Map<String, dynamic> data = <String, dynamic>{
-      "name": name,
-      "sugars": sugars,
-      "strength": strength
-    };
+    Map<String, dynamic> data = <String, dynamic>{"name": name, "spice": spice};
 
     await documentReferencer.update(data).whenComplete(() {
       response.code = 200;
@@ -74,7 +69,7 @@ class Database {
 
     await documentReferencer.delete().whenComplete(() {
       response.code = 200;
-      response.message = "Sucessfully Deleted Employee";
+      response.message = "Sucessfully Canceled Order";
     }).catchError((e) {
       response.code = 500;
       response.message = e;
