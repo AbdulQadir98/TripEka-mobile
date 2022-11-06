@@ -1,7 +1,9 @@
+import 'package:app/services/database.dart';
 import 'package:flutter/material.dart';
 
 class UpdateOrders extends StatefulWidget {
-  const UpdateOrders({super.key});
+  final String docid;
+  const UpdateOrders(this.docid, {super.key});
 
   @override
   State<UpdateOrders> createState() => _UpdateOrdersState();
@@ -12,14 +14,16 @@ class _UpdateOrdersState extends State<UpdateOrders> {
   final List<String> spice = ['hot', 'normal', 'low'];
 
   // form values
-  String _currentName = "Kottu";
+  String _currentName = "Rice";
   String _currentSpice = "normal";
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Form(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           children: <Widget>[
             const SizedBox(height: 10.0),
@@ -27,7 +31,7 @@ class _UpdateOrdersState extends State<UpdateOrders> {
               'CHANGE ORDER',
               style: TextStyle(fontSize: 20.0),
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 28.0),
             DropdownButtonFormField(
               value: _currentName,
               items: names.map((name) {
@@ -40,7 +44,7 @@ class _UpdateOrdersState extends State<UpdateOrders> {
             ),
             const SizedBox(height: 30.0),
             const Text(
-              'Spice level.',
+              'Choose Spice Level',
               style: TextStyle(fontSize: 18.0),
             ),
             const SizedBox(height: 20.0),
@@ -61,7 +65,29 @@ class _UpdateOrdersState extends State<UpdateOrders> {
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () async {
-                  print("update order");
+                  // if (_formKey.currentState!.validate()) {
+                  var response = await Database.updateOrder(
+                      name: _currentName,
+                      spice: _currentSpice,
+                      docId: widget.docid);
+                  if (response.code != 200) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: Text(response.message.toString()),
+                          );
+                        });
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: Text(response.message.toString()),
+                          );
+                        });
+                  }
+                  // }
                 }),
           ],
         ),

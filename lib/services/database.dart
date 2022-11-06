@@ -6,7 +6,7 @@ final CollectionReference _Collection = _firestore.collection('coffee');
 
 class Database {
   // create user
-  static Future<Response> addCoffee({
+  static Future<Response> addOrder({
     // required String uid,
     required String name,
     required String spice,
@@ -22,7 +22,7 @@ class Database {
 
     var result = await documentReferencer.set(data).whenComplete(() {
       response.code = 200;
-      response.message = "Sucessfully added to the database";
+      response.message = "Sucessfully Placed the Order";
     }).catchError((e) {
       response.code = 500;
       response.message = e;
@@ -51,7 +51,7 @@ class Database {
 
     await documentReferencer.update(data).whenComplete(() {
       response.code = 200;
-      response.message = "Sucessfully updated Employee";
+      response.message = "Sucessfully updated Order";
     }).catchError((e) {
       response.code = 500;
       response.message = e;
@@ -61,7 +61,7 @@ class Database {
   }
 
   // delete user
-  static Future<Response> deleteCoffee({
+  static Future<Response> deleteOrder({
     required String docId,
   }) async {
     Response response = Response();

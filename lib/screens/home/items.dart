@@ -46,7 +46,7 @@ class _ItemsState extends State<Items> {
                           TextButton(
                             child: const Text('ORDER'),
                             onPressed: () async {
-                              var response = await Database.addCoffee(
+                              var response = await Database.addOrder(
                                   name: "Kottu", spice: "normal");
                               if (response.code != 200) {
                                 showDialog(
@@ -91,7 +91,7 @@ class _ItemsState extends State<Items> {
                           TextButton(
                             child: const Text('ORDER'),
                             onPressed: () async {
-                              var response = await Database.addCoffee(
+                              var response = await Database.addOrder(
                                   name: "Rice", spice: "normal");
                               if (response.code != 200) {
                                 showDialog(
@@ -141,7 +141,7 @@ class _ItemsState extends State<Items> {
                           TextButton(
                             child: const Text('ORDER'),
                             onPressed: () async {
-                              var response = await Database.addCoffee(
+                              var response = await Database.addOrder(
                                   name: "Roti", spice: "normal");
                               if (response.code != 200) {
                                 showDialog(
@@ -186,7 +186,7 @@ class _ItemsState extends State<Items> {
                           TextButton(
                             child: const Text('ORDER'),
                             onPressed: () async {
-                              var response = await Database.addCoffee(
+                              var response = await Database.addOrder(
                                   name: "EggHoppers", spice: "normal");
                               if (response.code != 200) {
                                 showDialog(

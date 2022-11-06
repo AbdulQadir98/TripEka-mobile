@@ -15,11 +15,11 @@ class Orders extends StatefulWidget {
 }
 
 class _OrdersState extends State<Orders> {
-  void _showUpdatePanel() {
+  void _showUpdatePanel(String docid) {
     showModalBottomSheet(
         context: context,
         builder: (context) {
-          return const UpdateOrders();
+          return UpdateOrders(docid);
         });
   }
 
@@ -96,7 +96,8 @@ class _OrdersState extends State<Orders> {
                                 children: <Widget>[
                                   IconButton(
                                     icon: const Icon(Icons.more_vert),
-                                    onPressed: () => _showUpdatePanel(),
+                                    onPressed: () => _showUpdatePanel(
+                                        snapshot.data!.docs[index].id),
                                   )
                                 ],
                               ),
@@ -107,9 +108,12 @@ class _OrdersState extends State<Orders> {
                               children: <Widget>[
                                 const SizedBox(width: 8),
                                 TextButton(
-                                  child: const Text('CANCEL ORDER'),
+                                  child: const Text(
+                                    'CANCEL ORDER',
+                                    style: TextStyle(color: Colors.pink),
+                                  ),
                                   onPressed: () async {
-                                    var response = await Database.deleteCoffee(
+                                    var response = await Database.deleteOrder(
                                         docId: snapshot.data!.docs[index].id);
                                     if (response.code != 200) {
                                       showDialog(
