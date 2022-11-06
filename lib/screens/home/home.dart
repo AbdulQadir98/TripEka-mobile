@@ -8,22 +8,16 @@ import '../../models/user.dart';
 import '../order/orders.dart';
 import '../order/updateOrder.dart';
 
-// Home has to be a sateless widget
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({super.key});
 
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.grey[800],
           elevation: 0.0,
-          title: const Text('Welcome Bosa'),
+          title: const Text('OrderHut'),
           actions: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -44,7 +38,8 @@ class _HomeState extends State<Home> {
                 icon: const Icon(Icons.person),
                 label: const Text('logout'),
                 onPressed: () async {
-                  print(FirebaseAuth.instance.currentUser!.uid);
+                  FirebaseAuth.instance.signOut();
+                  // print(FirebaseAuth.instance.currentUser!.uid);
                 },
               ),
             ),

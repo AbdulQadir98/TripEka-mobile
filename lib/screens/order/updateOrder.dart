@@ -10,7 +10,7 @@ class UpdateOrders extends StatefulWidget {
 }
 
 class _UpdateOrdersState extends State<UpdateOrders> {
-  final List<String> names = ['Rice', 'Kottu', 'StringHoppers', 'Roti'];
+  final List<String> names = ['Rice', 'Kottu', 'EggHoppers', 'Roti'];
   final List<String> spice = ['hot', 'normal', 'low'];
 
   // form values

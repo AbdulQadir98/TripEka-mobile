@@ -15,7 +15,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   Future signInEmail() async {
-    // print("HERE @ signInEmail()");
+    // print("HERE");
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _email.text, password: _password.text);
@@ -65,8 +65,7 @@ class _SignInState extends State<SignIn> {
     getValue();
   }
 
-  // final _formKey = GlobalKey<FormState>();
-
+  final _formKey = GlobalKey<FormState>();
   // String email = '';
   // String password = '';
   // String error = '';
@@ -78,7 +77,7 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         backgroundColor: Colors.grey[800],
         elevation: 0.0,
-        title: Text('Sign in to TripEka'),
+        title: Text('Sign in to OrderHut'),
         actions: <Widget>[
           TextButton.icon(
             icon: Icon(Icons.person),
@@ -90,6 +89,7 @@ class _SignInState extends State<SignIn> {
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
+          key: _formKey,
           child: Column(
             children: <Widget>[
               SizedBox(height: 20.0),
@@ -129,13 +129,11 @@ class _SignInState extends State<SignIn> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    print(_email);
-                    print(_password);
-                    // if (_formKey.currentState!.validate()) {
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     const SnackBar(content: Text('Processing Data')),
-                    //   );
-                    // }
+                    if (_formKey.currentState!.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Processing Data')),
+                      );
+                    }
                     _saveUser();
                     await signInEmail();
                   }),

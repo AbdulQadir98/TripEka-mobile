@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:app/screens/order/updateOrder.dart';
+import 'package:app/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +36,8 @@ class _OrdersState extends State<Orders> {
                 icon: const Icon(Icons.person),
                 label: const Text('logout'),
                 onPressed: () async {
-                  print(FirebaseAuth.instance.currentUser!.uid);
+                  FirebaseAuth.instance.signOut();
+                  //print(FirebaseAuth.instance.currentUser!.uid);
                 },
               ),
             ),
@@ -75,7 +75,8 @@ class _OrdersState extends State<Orders> {
                   child: ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (ctx, index) => Padding(
-                      padding: const EdgeInsets.only(top: 0.0),
+                      padding: const EdgeInsets.only(
+                          top: 8.0, left: 5.0, right: 5.0),
                       child: Card(
                         margin: const EdgeInsets.all(5.0),
                         child: Column(

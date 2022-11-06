@@ -1,14 +1,9 @@
 import 'package:app/services/database.dart';
 import 'package:flutter/material.dart';
 
-class Items extends StatefulWidget {
+class Items extends StatelessWidget {
   const Items({super.key});
 
-  @override
-  State<Items> createState() => _ItemsState();
-}
-
-class _ItemsState extends State<Items> {
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -44,7 +39,10 @@ class _ItemsState extends State<Items> {
                           ),
                           const SizedBox(height: 2.0),
                           TextButton(
-                            child: const Text('ORDER'),
+                            child: const Text(
+                              'ORDER',
+                              style: TextStyle(color: Colors.pink),
+                            ),
                             onPressed: () async {
                               var response = await Database.addOrder(
                                   name: "Kottu", spice: "normal");
@@ -89,7 +87,10 @@ class _ItemsState extends State<Items> {
                           ),
                           const SizedBox(height: 2.0),
                           TextButton(
-                            child: const Text('ORDER'),
+                            child: const Text(
+                              'ORDER',
+                              style: TextStyle(color: Colors.pink),
+                            ),
                             onPressed: () async {
                               var response = await Database.addOrder(
                                   name: "Rice", spice: "normal");
@@ -139,7 +140,10 @@ class _ItemsState extends State<Items> {
                           ),
                           const SizedBox(height: 2.0),
                           TextButton(
-                            child: const Text('ORDER'),
+                            child: const Text(
+                              'ORDER',
+                              style: TextStyle(color: Colors.pink),
+                            ),
                             onPressed: () async {
                               var response = await Database.addOrder(
                                   name: "Roti", spice: "normal");
@@ -184,7 +188,10 @@ class _ItemsState extends State<Items> {
                           ),
                           const SizedBox(height: 2.0),
                           TextButton(
-                            child: const Text('ORDER'),
+                            child: const Text(
+                              'ORDER',
+                              style: TextStyle(color: Colors.pink),
+                            ),
                             onPressed: () async {
                               var response = await Database.addOrder(
                                   name: "EggHoppers", spice: "normal");

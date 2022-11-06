@@ -44,7 +44,7 @@ class _RegisterState extends State<Register> {
       appBar: AppBar(
         backgroundColor: Colors.grey[800],
         elevation: 0.0,
-        title: Text('Register to TripEka'),
+        title: Text('Register to OrderHut'),
         actions: <Widget>[
           TextButton.icon(
             icon: Icon(Icons.person),
@@ -68,6 +68,8 @@ class _RegisterState extends State<Register> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Enter Email';
+                  } else if (isValidEmail(value)) {
+                    return "Enter a valid email";
                   }
                   return null;
                 },
@@ -95,8 +97,6 @@ class _RegisterState extends State<Register> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    print(email);
-                    print(password);
                     if (_formKey.currentState!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Processing Data')),
@@ -109,5 +109,11 @@ class _RegisterState extends State<Register> {
         ),
       ),
     );
+  }
+
+  bool isValidEmail(String value) {
+    return RegExp(
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+        .hasMatch(value);
   }
 }
